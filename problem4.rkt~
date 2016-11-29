@@ -1,0 +1,19 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-beginner-abbr-reader.ss" "lang")((modname problem4) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor mixed-fraction #f #t none #f () #t)))
+;;************************************;;
+;;------------ Problem 4 -------------;;
+;;************************************;;
+
+(define (is-pal? num)
+  (string=? (number->string num) (list->string (reverse (string->list(number->string num))))))
+
+(define (large-pal first second max)
+  (cond  [(>= first 1000) (large-pal (+ first 1) 0 max)]
+         [(>= second 1000) (large-pal first (+ 1 second) max)]
+         [(and (string=? (substring (number->string (* first second)) 0 1) (substring (number->string (* first second)) (- (string-length (number->string (* first second))) 1))) (is-pal? (* first second)))
+          (cond [(> (* first second) max) (large-pal first (+ 1 second) (* first second))]
+                [else (large-pal first (+ 1 second) max)])]
+        [else (large-pal first (+ second 1) max)]))
+
+(large-pal 0 0 0)
